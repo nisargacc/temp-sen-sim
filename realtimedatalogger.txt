@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <unistd.h>  // for sleep()
+
+// Function to simulate temperature between 20°C to 35°C
+float generate_temperature() {
+    return 20.0 + (rand() % 160) / 10.0;  // Random float between 20.0 and 35.0
+}
+
+// Function to simulate humidity between 30% to 70%
+float generate_humidity() {
+    return 30.0 + (rand() % 400) / 10.0;  // Random float between 30.0 and 70.0
+}
+
+int main() {
+    FILE *file;
+    file = fopen("data_log.txt", "a");  // Open in append mode
+
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    srand(time(NULL));  // Seed the random number generator
+
+    while (1) {
+        time_t now = time(NULL);
+        struct tm *t = localtime(&now);
+
+        float temp = generate_temperature();
+        float humidity = generate_humidity();
+
+        // Print to terminal
+        printf("[%02d:%02d:%02d] Temperature: %.1f °C | Humidity: %.1f %%\n",
+               t->tm_hour, t->tm_min, t->tm_sec, temp, humidity);
+
+        // Write to file
+        fprintf(file, "[%02d:%02d:%02d] Temperature: %.1f °C | Humidity: %.1f %%\n",
+                t->tm_hour, t->tm_min, t->tm_sec, temp, humidity);
+        fflush(file);  // Ensure data is written immediately
+
+        sleep(2);  // Delay 2 seconds before next data point
+    }
+
+    fclose(file);
+    return 0;
+}
+OUTPUT
+===========================================================
+15:39:28] Temperature: 25.9 °C | Humidity: 32.1 %
+[15:39:30] Temperature: 25.1 °C | Humidity: 34.8 %
+[15:39:32] Temperature: 29.6 °C | Humidity: 67.7 %
+[15:39:34] Temperature: 22.9 °C | Humidity: 60.9 %
+[15:39:36] Temperature: 32.9 °C | Humidity: 50.8 %
+[15:39:38] Temperature: 26.0 °C | Humidity: 41.4 %
+[15:39:40] Temperature: 34.9 °C | Humidity: 65.4 %
+[15:39:42] Temperature: 24.8 °C | Humidity: 65.2 %
+[15:39:44] Temperature: 20.0 °C | Humidity: 47.8 %
+[15:39:46] Temperature: 32.5 °C | Humidity: 63.3 %
+[15:39:48] Temperature: 30.9 °C | Humidity: 41.7 %
+[15:39:50] Temperature: 24.5 °C | Humidity: 32.1 %
+[15:39:52] Temperature: 29.5 °C | Humidity: 54.9 %
+============================================================

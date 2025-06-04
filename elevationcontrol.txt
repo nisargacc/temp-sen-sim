@@ -1,0 +1,198 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdbool.h>
+
+#define MAX_FLOORS 5
+
+int current_floor = 0;
+bool floor_requests[MAX_FLOORS] = {false};
+bool emergency_stop = false;
+
+void display_status() {
+    printf("\n--- Elevator Status ---\n");
+    printf("Current Floor: %d\n", current_floor);
+    printf("Requested Floors: ");
+    for (int i = 0; i < MAX_FLOORS; i++) {
+        if (floor_requests[i]) {
+            printf("%d ", i);
+        }
+    }
+    printf("\nEmergency Stop: %s\n", emergency_stop ? "ACTIVE" : "OFF");
+    printf("------------------------\n");
+}
+
+void press_button(int floor) {
+    if (floor >= 0 && floor < MAX_FLOORS) {
+        floor_requests[floor] = true;
+        printf("Button pressed for floor %d.\n", floor);
+    } else {
+        printf("Invalid floor.\n");
+    }
+}
+
+void move_elevator() {
+    if (emergency_stop) {
+        printf("Elevator stopped due to emergency.\n");
+        return;
+    }
+
+    for (int i = 0; i < MAX_FLOORS; i++) {
+        if (floor_requests[i]) {
+            while (current_floor < i) {
+                current_floor++;
+                printf("Moving up... Floor: %d\n", current_floor);
+                sleep(1);
+            }
+            while (current_floor > i) {
+                current_floor--;
+                printf("Moving down... Floor: %d\n", current_floor);
+                sleep(1);
+            }
+            printf("Reached floor %d. Opening doors...\n", current_floor);
+            sleep(2);
+            printf("Closing doors.\n");
+            floor_requests[i] = false;
+        }
+    }
+}
+
+void activate_emergency_stop() {
+    emergency_stop = true;
+    printf("Emergency stop activated!\n");
+}
+
+void reset_elevator() {
+    emergency_stop = false;
+    printf("System reset. Elevator is operational.\n");
+}
+
+void menu() {
+    printf("\nElevator Control Menu:\n");
+    printf("1. Press Floor Button\n");
+    printf("2. Move Elevator\n");
+    printf("3. Emergency Stop\n");
+    printf("4. Reset System\n");
+    printf("5. Display Status\n");
+    printf("6. Exit\n");
+    printf("Select an option: ");
+}
+
+int main() {
+    int choice, floor;
+
+    printf("Elevator Control System Simulation\n");
+
+    while (1) {
+        menu();
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter floor (0 to %d): ", MAX_FLOORS - 1);
+                scanf("%d", &floor);
+                press_button(floor);
+                break;
+            case 2:
+                move_elevator();
+                break;
+            case 3:
+                activate_emergency_stop();
+                break;
+            case 4:
+                reset_elevator();
+                break;
+            case 5:
+                display_status();
+                break;
+            case 6:
+                printf("Exiting simulation.\n");
+                return 0;
+            default:
+                printf("Invalid option.\n");
+        }
+    }
+
+    return 0;
+}
+OUTPUT
+=====================================================
+Elevator Control System Simulation
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 1
+Enter floor (0 to 4): 4
+Button pressed for floor 4.
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 2
+Moving up... Floor: 1
+Moving up... Floor: 2
+Moving up... Floor: 3
+Moving up... Floor: 4
+Reached floor 4. Opening doors...
+Closing doors.
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 3
+Emergency stop activated!
+
+Elevator Control System Simulation
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 4
+System reset. Elevator is operational.
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 5
+
+--- Elevator Status ---
+Current Floor: 0
+Requested Floors: 
+Emergency Stop: OFF
+------------------------
+
+Elevator Control Menu:
+1. Press Floor Button
+2. Move Elevator
+3. Emergency Stop
+4. Reset System
+5. Display Status
+6. Exit
+Select an option: 6
+Exiting simulation.
+
+
+=== Code Execution Successful ======
+===============================================
+

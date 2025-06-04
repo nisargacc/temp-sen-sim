@@ -1,0 +1,160 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+bool lightOn = false;
+bool fanOn = false;
+bool alarmOn = false;
+bool roomOccupied = true;
+
+void displayStatus() {
+    printf("\n--- Device Status ---\n");
+    printf("Light: %s\n", lightOn ? "ON" : "OFF");
+    printf("Fan: %s\n", fanOn ? "ON" : "OFF");
+    printf("Alarm: %s\n", alarmOn ? "ON" : "OFF");
+    printf("Room Occupancy: %s\n", roomOccupied ? "Occupied" : "Empty");
+}
+
+void controlDevices() {
+    int choice;
+    while (1) {
+        printf("\n--- Home Automation Menu ---\n");
+        printf("1. Toggle Light\n");
+        printf("2. Toggle Fan\n");
+        printf("3. Toggle Alarm\n");
+        printf("4. Leave Room\n");
+        printf("5. Enter Room\n");
+        printf("6. Display Device Status\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                lightOn = !lightOn;
+                printf("Light turned %s.\n", lightOn ? "ON" : "OFF");
+                break;
+            case 2:
+                fanOn = !fanOn;
+                printf("Fan turned %s.\n", fanOn ? "ON" : "OFF");
+                break;
+            case 3:
+                alarmOn = !alarmOn;
+                printf("Alarm turned %s.\n", alarmOn ? "ON" : "OFF");
+                break;
+            case 4:
+                roomOccupied = false;
+                lightOn = false;  // Automation: turn off light when leaving
+                fanOn = false;    // Automation: turn off fan when leaving
+                printf("You left the room. Lights and fan turned OFF automatically.\n");
+                break;
+            case 5:
+                roomOccupied = true;
+                printf("You entered the room.\n");
+                break;
+            case 6:
+                displayStatus();
+                break;
+            case 7:
+                printf("Exiting Home Automation System.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+}
+
+int main() {
+    printf("Welcome to Home Automation System Simulation\n");
+    controlDevices();
+    return 0;
+}
+OUTPUT
+=================================================
+Welcome to Home Automation System Simulation
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 1
+Light turned ON.
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 2
+Fan turned ON.
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 3
+Alarm turned ON.
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 4
+You left the room. Lights and fan turned OFF automatically.
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 5
+You entered the room.
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 6
+
+--- Device Status ---
+Light: OFF
+Fan: OFF
+Alarm: ON
+Room Occupancy: Occupied
+
+--- Home Automation Menu ---
+1. Toggle Light
+2. Toggle Fan
+3. Toggle Alarm
+4. Leave Room
+5. Enter Room
+6. Display Device Status
+7. Exit
+Enter your choice: 7
+Exiting Home Automation System.
+
+
+=== Code Execution Successful ===
+=================================================

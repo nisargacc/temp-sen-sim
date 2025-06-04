@@ -1,0 +1,200 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+
+int moistureLevel = 70;  // Initial simulated value
+bool irrigationOn = false;
+int threshold = 50;      // Moisture threshold to trigger irrigation
+int scheduledHour = 6;   // Default scheduled irrigation hour (e.g., 6 AM)
+
+void checkMoisture() {
+    // Simulate new moisture level
+    moistureLevel = rand() % 101;  // Range 0-100
+    printf("\n[Sensor] Soil moisture level: %d%%\n", moistureLevel);
+    if (moistureLevel < threshold) {
+        irrigationOn = true;
+        printf("[Action] Moisture below threshold! Starting irrigation...\n");
+    } else {
+        irrigationOn = false;
+        printf("[Info] Moisture is sufficient. Irrigation not needed.\n");
+    }
+}
+
+void manualControl() {
+    int choice;
+    printf("\n--- Manual Irrigation Control ---\n");
+    printf("1. Turn Irrigation ON\n");
+    printf("2. Turn Irrigation OFF\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        irrigationOn = true;
+        printf("Manual: Irrigation turned ON.\n");
+    } else if (choice == 2) {
+        irrigationOn = false;
+        printf("Manual: Irrigation turned OFF.\n");
+    } else {
+        printf("Invalid choice.\n");
+    }
+}
+
+void adjustSettings() {
+    printf("\n--- Adjust Settings ---\n");
+    printf("Enter new moisture threshold (0-100): ");
+    scanf("%d", &threshold);
+    printf("Enter scheduled irrigation hour (0-23): ");
+    scanf("%d", &scheduledHour);
+    printf("Settings updated.\n");
+}
+
+void scheduledIrrigation() {
+    time_t t = time(NULL);
+    struct tm *tm_info = localtime(&t);
+    int currentHour = tm_info->tm_hour;
+
+    printf("\n[Time] Current hour: %d\n", currentHour);
+    if (currentHour == scheduledHour) {
+        irrigationOn = true;
+        printf("[Schedule] It's the scheduled time. Irrigation started.\n");
+    } else {
+        printf("[Schedule] Not scheduled time yet.\n");
+    }
+}
+
+void displayStatus() {
+    printf("\n--- System Status ---\n");
+    printf("Soil Moisture: %d%%\n", moistureLevel);
+    printf("Irrigation: %s\n", irrigationOn ? "ON" : "OFF");
+    printf("Moisture Threshold: %d%%\n", threshold);
+    printf("Scheduled Irrigation Hour: %d\n", scheduledHour);
+}
+
+int main() {
+    srand(time(NULL));
+    int choice;
+    printf("Smart Irrigation System Simulation\n");
+
+    while (1) {
+        printf("\n--- Main Menu ---\n");
+        printf("1. Check Moisture Level & Auto Irrigate\n");
+        printf("2. Manual Irrigation Control\n");
+        printf("3. Scheduled Irrigation Check\n");
+        printf("4. Adjust Settings\n");
+        printf("5. Display System Status\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                checkMoisture();
+                break;
+            case 2:
+                manualControl();
+                break;
+            case 3:
+                scheduledIrrigation();
+                break;
+            case 4:
+                adjustSettings();
+                break;
+            case 5:
+                displayStatus();
+                break;
+            case 6:
+                printf("Exiting simulation.\n");
+                exit(0);
+            default:
+                printf("Invalid option.\n");
+        }
+    }
+    return 0;
+}
+OUTPUT
+==========================================================
+Smart Irrigation System Simulation
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 1
+
+[Sensor] Soil moisture level: 9%
+[Action] Moisture below threshold! Starting irrigation...
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 2
+
+--- Manual Irrigation Control ---
+1. Turn Irrigation ON
+2. Turn Irrigation OFF
+Enter your choice: 1
+Manual: Irrigation turned ON.
+
+
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 3
+
+[Time] Current hour: 10
+[Schedule] Not scheduled time yet.
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 4
+
+--- Adjust Settings ---
+Enter new moisture threshold (0-100): 50
+Enter scheduled irrigation hour (0-23): 4
+Settings updated.
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 5
+
+--- System Status ---
+Soil Moisture: 70%
+Irrigation: OFF
+Moisture Threshold: 50%
+Scheduled Irrigation Hour: 4
+
+--- Main Menu ---
+1. Check Moisture Level & Auto Irrigate
+2. Manual Irrigation Control
+3. Scheduled Irrigation Check
+4. Adjust Settings
+5. Display System Status
+6. Exit
+Enter your choice: 6
+Exiting simulation.
+
+
+=== Code Execution Successful ===
+
