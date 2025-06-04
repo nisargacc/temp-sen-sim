@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_TEMP 50.0   // Celsius
+#define MIN_TEMP -10.0  // Celsius
+#define HIGH_ALERT 40.0 // Celsius
+#define LOW_ALERT 0.0   // Celsius
+
+// Function to convert Celsius to Fahrenheit
+float celsiusToFahrenheit(float celsius) {
+    return (celsius * 9 / 5) + 32;
+}
+
+// Function to convert Fahrenheit to Celsius
+float fahrenheitToCelsius(float fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9;
+}
+
+// Function to generate random temperature in Celsius
+float generateRandomTemperature() {
+    return ((float)rand() / RAND_MAX) * (MAX_TEMP - MIN_TEMP) + MIN_TEMP;
+}
+
+// Function to display temperature and alert if needed
+void displayTemperature(float tempCelsius, char scale) {
+    float displayTemp = (scale == 'F') ? celsiusToFahrenheit(tempCelsius) : tempCelsius;
+    printf("Temperature: %.2f %c\n", displayTemp, scale);
+
+    if (tempCelsius >= HIGH_ALERT) {
+        printf("⚠  High Temperature Alert!\n");
+    } else if (tempCelsius <= LOW_ALERT) {
+        printf("❄  Low Temperature Warning!\n");
+    }
+    printf("\n");
+}
+
+int main() {
+    srand(time(0));  // Seed for random temperature
+
+    int mode;
+    char scale;
+    float userInput;
+
+    printf("=== Temperature Sensor Simulation ===\n");
+    printf("Choose Input Mode:\n");
+    printf("1. Manual Input\n");
+    printf("2. Simulated (Random)\n");
+    printf("Enter choice (1 or 2): ");
+    scanf("%d", &mode);
+
+    printf("Choose Display Scale: (C/F): ");
+    scanf(" %c", &scale);
+
+    if (scale != 'C' && scale != 'F') {
+        printf("Invalid scale. Please use 'C' or 'F'.\n");
+        return 1;
+    }
+
+    if (mode == 1) {
+        printf("Enter temperature value in Celsius: ");
+        scanf("%f", &userInput);
+        displayTemperature(userInput, scale);
+    } else if (mode == 2) {
+        float randomTemp = generateRandomTemperature();
+        displayTemperature(randomTemp, scale);
+    } else {
+        printf("Invalid input mode selected.\n");
+    }
+
+    return 0;
+}
+EXPECTED OUTPUTS
+================================
+=== Temperature Sensor Simulation ===
+Choose Input Mode:
+1. Manual Input
+2. Simulated (Random)
+Enter choice (1 or 2): 1
+Choose Display Scale: (C/F): C
+Enter temperature value in Celsius: 80
+Temperature: 80.00 C
+⚠  High Temperature Alert!
+=====================================
+Choose Input Mode:
+1. Manual Input
+2. Simulated (Random)
+Enter choice (1 or 2): 2
+Choose Display Scale: (C/F): F
+Temperature: 98.13 F
+
+
+
+=== Code Execution Successful ===
+=======================================
